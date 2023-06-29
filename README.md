@@ -27,7 +27,6 @@ func main() {
 	client := promptlayer.NewClient(os.Getenv("PROMPTLAYER_API_KEY"))
 
 	startTime := promptlayer.Now()
-    // Make a request
 	endTime := startTime.Add(3 * time.Second)
 
 	output, err := client.TrackRequest(context.Background(), &promptlayer.TrackRequestInput{
