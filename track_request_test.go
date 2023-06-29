@@ -27,7 +27,7 @@ func TestClient_TrackRequest(t *testing.T) {
 			doFunc: func(req *http.Request) (*http.Response, error) {
 				// Assert the request details
 				assert.Equal(t, http.MethodPost, req.Method)
-				assert.Equal(t, "/track-request", req.URL.Path)
+				assert.Equal(t, "/rest/track-request", req.URL.Path)
 
 				// Process the input and return a mock response
 				trackRequestOutput := &TrackRequestOutput{
