@@ -7,25 +7,6 @@ import (
 	"net/http"
 )
 
-// PromptTemplate represents a prompt template.
-type PromptTemplate struct {
-	Template       string   `json:"template,omitempty"`
-	InputVariables []string `json:"input_variables,omitempty"`
-}
-
-// MarshalJSON is a custom JSON marshaler for PromptTemplate.
-func (pt *PromptTemplate) MarshalJSON() ([]byte, error) {
-	return json.Marshal(&struct {
-		Type           string   `json:"_type"`
-		Template       string   `json:"template,omitempty"`
-		InputVariables []string `json:"input_variables,omitempty"`
-	}{
-		Type:           "prompt",
-		Template:       pt.Template,
-		InputVariables: pt.InputVariables,
-	})
-}
-
 // PublishPromptTemplateInput represents the input data for publishing a prompt template.
 type PublishPromptTemplateInput struct {
 	PromptName     string         `json:"prompt_name,omitempty"`

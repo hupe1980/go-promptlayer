@@ -47,6 +47,25 @@ func NewClient(apiKey string, optFns ...func(o *ClientOptions)) *Client {
 	}
 }
 
+// PromptTemplate represents a prompt template.
+type PromptTemplate struct {
+	Template       string   `json:"template,omitempty"`
+	InputVariables []string `json:"input_variables,omitempty"`
+}
+
+// MarshalJSON is a custom JSON marshaler for PromptTemplate.
+func (pt *PromptTemplate) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&struct {
+		Type           string   `json:"_type"`
+		Template       string   `json:"template,omitempty"`
+		InputVariables []string `json:"input_variables,omitempty"`
+	}{
+		Type:           "prompt",
+		Template:       pt.Template,
+		InputVariables: pt.InputVariables,
+	})
+}
+
 // APIError represents an error response from the PromptLayer API.
 type APIError struct {
 	// Message contains the error message.
