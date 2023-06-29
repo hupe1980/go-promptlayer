@@ -7,11 +7,13 @@ import (
 	"net/http"
 )
 
+// PromptTemplate represents a prompt template.
 type PromptTemplate struct {
 	Template       string   `json:"template,omitempty"`
 	InputVariables []string `json:"input_variables,omitempty"`
 }
 
+// MarshalJSON is a custom JSON marshaler for PromptTemplate.
 func (pt *PromptTemplate) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
 		Type           string   `json:"_type"`
@@ -24,6 +26,7 @@ func (pt *PromptTemplate) MarshalJSON() ([]byte, error) {
 	})
 }
 
+// PublishPromptTemplateInput represents the input data for publishing a prompt template.
 type PublishPromptTemplateInput struct {
 	PromptName     string         `json:"prompt_name,omitempty"`
 	PromptTemplate PromptTemplate `json:"prompt_template,omitempty"`
@@ -31,11 +34,13 @@ type PublishPromptTemplateInput struct {
 	APIKey         string         `json:"api_key,omitempty"`
 }
 
+// PublishPromptTemplateOutput represents the output data for publishing a prompt template.
 type PublishPromptTemplateOutput struct {
 	ID      uint64 `json:"id"`
 	Success bool   `json:"success"`
 }
 
+// PublishPromptTemplate publishes a prompt template using the PromptLayer API.
 func (c *Client) PublishPromptTemplate(ctx context.Context, input *PublishPromptTemplateInput) (*PublishPromptTemplateOutput, error) {
 	url := fmt.Sprintf("%s/rest/publish-prompt-template", c.baseURL)
 

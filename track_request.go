@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// TrackRequestInput represents the input data for tracking a request.
 type TrackRequestInput struct {
 	FunctionName         string            `json:"function_name,omitempty"`
 	Args                 []string          `json:"args,omitempty"`
@@ -23,6 +24,7 @@ type TrackRequestInput struct {
 	APIKey               string            `json:"api_key,omitempty"`
 }
 
+// MarshalJSON is a custom JSON marshaler for TrackRequestInput.
 func (i *TrackRequestInput) MarshalJSON() ([]byte, error) {
 	return json.Marshal(&struct {
 		FunctionName         string            `json:"function_name,omitempty"`
@@ -52,11 +54,13 @@ func (i *TrackRequestInput) MarshalJSON() ([]byte, error) {
 	})
 }
 
+// TrackRequestOutput represents the output data for a tracked request.
 type TrackRequestOutput struct {
 	RequestID uint64 `json:"request_id"`
 	Success   bool   `json:"success"`
 }
 
+// TrackRequest tracks a request using the PromptLayer API.
 func (c *Client) TrackRequest(ctx context.Context, input *TrackRequestInput) (*TrackRequestOutput, error) {
 	url := fmt.Sprintf("%s/rest/track-request", c.baseURL)
 
