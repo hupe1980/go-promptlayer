@@ -33,11 +33,11 @@ func TestClient_PublishPromptTemplate(t *testing.T) {
 				assert.Equal(t, http.MethodPost, req.Method)
 				assert.Equal(t, "/rest/publish-prompt-template", req.URL.Path)
 
-				// Process the input and return a mock response
-				publishPromptTemplateOutput := &PublishPromptTemplateOutput{
-					ID:      123,
-					Success: true,
+				publishPromptTemplateOutput := map[string]any{
+					"id":      123,
+					"success": true,
 				}
+
 				responseBody, _ := json.Marshal(publishPromptTemplateOutput)
 
 				return &http.Response{
@@ -57,7 +57,7 @@ func TestClient_PublishPromptTemplate(t *testing.T) {
 
 		// Assert the output values
 		expectedOutput := &PublishPromptTemplateOutput{
-			ID:      123,
+			ID:      "123",
 			Success: true,
 		}
 		assert.Equal(t, expectedOutput, output)

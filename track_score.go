@@ -5,12 +5,30 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 )
 
 type TrackScoreInput struct {
-	RequestID uint64 `json:"request_id,omitempty"`
+	RequestID string `json:"request_id,omitempty"`
 	Score     uint   `json:"score,omitempty"`
 	APIKey    string `json:"api_key,omitempty"`
+}
+
+func (i *TrackScoreInput) MarshalJSON() ([]byte, error) {
+	requestID, err := strconv.ParseUint(i.RequestID, 10, 64)
+	if err != nil {
+		return nil, err
+	}
+
+	return json.Marshal(&struct {
+		RequestID uint64 `json:"request_id,omitempty"`
+		Score     uint   `json:"score,omitempty"`
+		APIKey    string `json:"api_key,omitempty"`
+	}{
+		RequestID: requestID,
+		Score:     i.Score,
+		APIKey:    i.APIKey,
+	})
 }
 
 type TrackScoreOutput struct {

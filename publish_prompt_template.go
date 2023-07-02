@@ -17,8 +17,25 @@ type PublishPromptTemplateInput struct {
 
 // PublishPromptTemplateOutput represents the output data for publishing a prompt template.
 type PublishPromptTemplateOutput struct {
-	ID      uint64 `json:"id"`
+	ID      string `json:"id"`
 	Success bool   `json:"success"`
+}
+
+func (o *PublishPromptTemplateOutput) UnmarshalJSON(data []byte) error {
+	temp := struct {
+		ID      uint64 `json:"id"`
+		Success bool   `json:"success"`
+	}{}
+
+	// Unmarshal JSON data into the temporary struct
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+
+	o.ID = fmt.Sprint(temp.ID)
+	o.Success = temp.Success
+
+	return nil
 }
 
 // PublishPromptTemplate publishes a prompt template using the PromptLayer API.

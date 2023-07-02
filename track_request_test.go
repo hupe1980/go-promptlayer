@@ -30,10 +30,11 @@ func TestClient_TrackRequest(t *testing.T) {
 				assert.Equal(t, "/rest/track-request", req.URL.Path)
 
 				// Process the input and return a mock response
-				trackRequestOutput := &TrackRequestOutput{
-					RequestID: 123,
-					Success:   true,
+				trackRequestOutput := map[string]any{
+					"request_id": 123,
+					"success":    true,
 				}
+
 				responseBody, _ := json.Marshal(trackRequestOutput)
 
 				return &http.Response{
@@ -52,7 +53,7 @@ func TestClient_TrackRequest(t *testing.T) {
 		// Assert the output and error
 		assert.NoError(t, err)
 		assert.NotNil(t, output)
-		assert.Equal(t, uint64(123), output.RequestID)
+		assert.Equal(t, "123", output.RequestID)
 		assert.True(t, output.Success)
 	})
 

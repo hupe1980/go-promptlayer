@@ -56,8 +56,25 @@ func (i *TrackRequestInput) MarshalJSON() ([]byte, error) {
 
 // TrackRequestOutput represents the output data for a tracked request.
 type TrackRequestOutput struct {
-	RequestID uint64 `json:"request_id"`
+	RequestID string `json:"request_id"`
 	Success   bool   `json:"success"`
+}
+
+func (o *TrackRequestOutput) UnmarshalJSON(data []byte) error {
+	temp := struct {
+		RequestID uint64 `json:"request_id"`
+		Success   bool   `json:"success"`
+	}{}
+
+	// Unmarshal JSON data into the temporary struct
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+
+	o.RequestID = fmt.Sprint(temp.RequestID)
+	o.Success = temp.Success
+
+	return nil
 }
 
 // TrackRequest tracks a request using the PromptLayer API.
