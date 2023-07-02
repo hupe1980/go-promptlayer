@@ -19,5 +19,6 @@ func main() {
 		log.Fatal(err)
 	}
 
+	fmt.Println("ID:", output.ID)
 	fmt.Println("Template:", output.PromptTemplate)
 }

@@ -16,11 +16,34 @@ type GetPromptTemplateInput struct {
 }
 
 type GetPromptTemplateOutput struct {
-	ID             uint64         `json:"id"`
+	ID             string         `json:"id"`
 	Deleted        bool           `json:"deleted"`
 	PromptTemplate PromptTemplate `json:"prompt_template"`
 	Version        int            `json:"version"`
 	Tags           []string       `json:"tags"`
+}
+
+func (o *GetPromptTemplateOutput) UnmarshalJSON(data []byte) error {
+	temp := struct {
+		ID             uint64         `json:"id"`
+		Deleted        bool           `json:"deleted"`
+		PromptTemplate PromptTemplate `json:"prompt_template"`
+		Version        int            `json:"version"`
+		Tags           []string       `json:"tags"`
+	}{}
+
+	// Unmarshal JSON data into the temporary struct
+	if err := json.Unmarshal(data, &temp); err != nil {
+		return err
+	}
+
+	o.ID = fmt.Sprint(temp.ID)
+	o.Deleted = temp.Deleted
+	o.PromptTemplate = temp.PromptTemplate
+	o.Version = temp.Version
+	o.Tags = temp.Tags
+
+	return nil
 }
 
 func (c *Client) GetPromptTemplate(ctx context.Context, input *GetPromptTemplateInput) (*GetPromptTemplateOutput, error) {
